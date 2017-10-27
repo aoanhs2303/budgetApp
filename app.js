@@ -145,7 +145,8 @@ var UIController = (function() {
         expenseLabel: '.budget__expenses--value',
         percentageLabel: '.budget__expenses--percentage',
         container: '.container',
-        expensePercentageLabel: '.item__percentage'
+        expensePercentageLabel: '.item__percentage',
+        dateLabel: '.budget__title--month'
     };
 
     
@@ -234,7 +235,7 @@ var UIController = (function() {
 
         displayBudget: function(obj) {
             var type;
-            (obj.budget > 0) ? type = 'inc' : type = 'exp';
+            (obj.budget >= 0) ? type = 'inc' : type = 'exp';
 
             document.querySelector(DOMstrings.budgetLabel).textContent = formatNumber(obj.budget, type);
             document.querySelector(DOMstrings.incomeLabel).textContent = formatNumber(obj.totalInc, 'inc');
@@ -263,6 +264,21 @@ var UIController = (function() {
                 }
                 
             });
+        },
+
+        displayMonth: function() {
+            var now, month, year, months;
+            now = new Date();
+            //var chirmas = new Date(2017, 11, 25);
+            year = now.getFullYear(); // 2017
+
+            months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+            month = now.getMonth();
+
+            document.querySelector(DOMstrings.dateLabel).textContent = months[month] + ' ' + year;
+
+        
         },
 
         getDOMstrings: function() {
@@ -363,6 +379,7 @@ var controller = (function(budgetCtrl, UICtrl) {
     return {
         init: function() {
             console.log('Application started');
+            UICtrl.displayMonth();
             UICtrl.displayBudget({
                 budget: 0,
                 totalInc: 0,
@@ -370,6 +387,7 @@ var controller = (function(budgetCtrl, UICtrl) {
                 percentage: -1
             })
             setupEventListener();
+
         }
     }
 
