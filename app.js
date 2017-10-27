@@ -99,7 +99,8 @@ var UIController = (function() {
         budgetLabel: '.budget__value',
         incomeLabel: '.budget__income--value',
         expenseLabel: '.budget__expenses--value',
-        percentageLabel: '.budget__expenses--percentage'
+        percentageLabel: '.budget__expenses--percentage',
+        container: '.container'
     };
 
     return {
@@ -116,7 +117,7 @@ var UIController = (function() {
             //Create HTML string with place holder text
             if(type === 'inc') {
                 element = DOMstrings.incomeContainer;
-                html = `<div class="item clearfix" id="income-%id%">
+                html = `<div class="item clearfix" id="inc-%id%">
                             <div class="item__description">%description%</div>
                             <div class="right clearfix">
                                 <div class="item__value">+ %value%</div>
@@ -127,7 +128,7 @@ var UIController = (function() {
                         </div>`
             } else if (type === 'exp') {
                 element = DOMstrings.expenseContainer;
-                html = `<div class="item clearfix" id="expense-%id%">
+                html = `<div class="item clearfix" id="exp-%id%">
                             <div class="item__description">%description%</div>
                             <div class="right clearfix">
                                 <div class="item__value">- %value%</div>
@@ -189,7 +190,9 @@ var controller = (function(budgetCtrl, UICtrl) {
             if(event.keycode === 13 | event.which === 13) {
                 ctrlAddItem();
             }
-        }) 
+        });
+        
+        document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
     };
 
     var updateBudget = function() {
@@ -201,7 +204,6 @@ var controller = (function(budgetCtrl, UICtrl) {
 
         //3. Display the budget on the UI
         UICtrl.displayBudget(budget);
-
 
     };
     
@@ -225,9 +227,24 @@ var controller = (function(budgetCtrl, UICtrl) {
             updateBudget();
             
         }
+    };
 
+    var ctrlDeleteItem = function(event) {
+        var itemID;
+        itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+
+        if(itemID) {
+            //inc-1
+            splitID = itemID.split('-'); // tach 2 thanh 2 phan la inc va 1
+            type = splitID[0];
+            ID = splitID[1];
         
+            //1. Delete the item from the data structure
 
+            //2. Delete the item from the UI
+
+            //3. Update and show the new budget
+        }
     };
 
     return {
